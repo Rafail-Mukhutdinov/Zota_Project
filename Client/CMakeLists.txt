@@ -17,12 +17,15 @@ set(PROJECT_SOURCES
         widget.cpp
         widget.h
         widget.ui
+        program.h 
+        program.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Client
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        
     )
 
 else()
