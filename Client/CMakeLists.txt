@@ -1,5 +1,6 @@
+cmake_minimum_required(VERSION 3.5)
 
-project(Zota_Client VERSION 0.1 LANGUAGES CXX)
+project(Client VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -19,31 +20,31 @@ set(PROJECT_SOURCES
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(Zota_Client
+    qt_add_executable(Client
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
     )
 
 else()
     if(ANDROID)
-        add_library(Zota_Client SHARED
+        add_library(Client SHARED
             ${PROJECT_SOURCES}
         )
 
     else()
-        add_executable(Zota_Client
+        add_executable(Client
             ${PROJECT_SOURCES}
         )
     endif()
 endif()
 
-target_link_libraries(Zota_Client PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(Client PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
 
 if(${QT_VERSION} VERSION_LESS 6.1.0)
-  set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.Zota_Client)
+  set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.Client)
 endif()
-set_target_properties(Zota_Client PROPERTIES
+set_target_properties(Client PROPERTIES
     ${BUNDLE_ID_OPTION}
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
@@ -52,12 +53,12 @@ set_target_properties(Zota_Client PROPERTIES
 )
 
 include(GNUInstallDirs)
-install(TARGETS Zota_Client
+install(TARGETS Client
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
 if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(Zota_Client)
+    qt_finalize_executable(Client)
 endif()
