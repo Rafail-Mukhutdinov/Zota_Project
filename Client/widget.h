@@ -17,7 +17,41 @@ public:
     Widget(QWidget *parent = nullptr);
     ~Widget();
 
+private slots:
+    void on_Button_1_clicked();
+
+    void on_Button_7_clicked();
+
+    void on_Button_8_clicked();
+
+    void on_Button_9_clicked();
+
+    void on_Button_plus_clicked();
+
+    void on_Button_4_clicked();
+
+    void on_Button_5_clicked();
+
+    void on_Button_6_clicked();
+
+    void on_pushButton_minus_clicked();
+
+    void on_Button_2_clicked();
+
+    void on_Button_3_clicked();
+
+    void on_Button_multiply_clicked();
+
+    void on_Button_0_clicked();
+
+    void on_Button_equals_clicked();
+
+    void on_Button_divide_clicked();
+
+    void on_Button_reset_clicked();
+
 private:
     Ui::Widget *ui;
+    QString lineEditText;
 };
 #endif // WIDGET_H
