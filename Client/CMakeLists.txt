@@ -19,6 +19,8 @@ set(PROJECT_SOURCES
         widget.ui
         program.h 
         program.cpp
+        ../lib/stringprocessor.h
+        ../lib/stringprocessor.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

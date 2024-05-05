@@ -92,9 +92,8 @@ void Widget::on_Button_0_clicked()
 
 
 void Widget::on_Button_equals_clicked()
-{
-    //ui->lineEdit_number->setText(ui->lineEdit_number->text() + "=");
-    lineEditText = ui->lineEdit_number->text();
+{    
+    lineEditText = strProces.removeLastOperator(ui->lineEdit_number->text());
     ui->label_text_status->setText(lineEditText);
 }
 

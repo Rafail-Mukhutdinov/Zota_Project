@@ -1,6 +1,8 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
+#include "../lib/stringprocessor.h"
+
 #include <QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -53,5 +55,6 @@ private slots:
 private:
     Ui::Widget *ui;
     QString lineEditText;
+    StringProcessor strProces;
 };
 #endif // WIDGET_H
