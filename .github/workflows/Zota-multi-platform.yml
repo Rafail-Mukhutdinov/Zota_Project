@@ -67,3 +67,14 @@ jobs:
     - name: Test
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       run: ctest --build-config ${{ matrix.build_type }}
+      
+    - name: Run Google Test
+      shell: pwsh
+      run: |
+        if ("${{ matrix.os }}" -eq "windows-latest") {         
+            cd ${{ github.workspace }}/build/Google_Test/Release
+            ./MyTests.exe
+        } else {          
+            cd ${{ github.workspace }}/build/Google_Test
+            ./MyTests
+        }

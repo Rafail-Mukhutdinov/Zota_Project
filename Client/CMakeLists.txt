@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.27)
 
 project(Client VERSION 0.1 LANGUAGES CXX)
 
@@ -19,6 +19,8 @@ set(PROJECT_SOURCES
         widget.ui
         program.h 
         program.cpp
+        ../lib/stringprocessor.h
+        ../lib/stringprocessor.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
