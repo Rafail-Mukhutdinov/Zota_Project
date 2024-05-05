@@ -1,9 +1,10 @@
 #include <QCoreApplication>
-#include <iostream>
+#include "../lib/networkconnector.h"
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-    std::cout << "Hello World!!" << std::endl;
+    NetworkConnector net;
+    net.startServer(QHostAddress::Any, 1234);
     return a.exec();
 }

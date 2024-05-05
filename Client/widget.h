@@ -2,11 +2,13 @@
 #define WIDGET_H
 
 #include "../lib/stringprocessor.h"
+#include "../lib/networkconnector.h"
 
 #include <QWidget>
 
 QT_BEGIN_NAMESPACE
-namespace Ui {
+namespace Ui
+{
 class Widget;
 }
 QT_END_NAMESPACE
@@ -52,9 +54,13 @@ private slots:
 
     void on_Button_reset_clicked();
 
+    void on_Button_Connect_Server_clicked();
+
 private:
     Ui::Widget *ui;
     QString lineEditText;
     StringProcessor strProces;
+    NetworkConnector net;
+
 };
 #endif // WIDGET_H

@@ -9,8 +9,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Network)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Network)
 
 set(PROJECT_SOURCES
         client.cpp
@@ -21,6 +21,8 @@ set(PROJECT_SOURCES
         program.cpp
         ../lib/stringprocessor.h
         ../lib/stringprocessor.cpp
+        ../lib/networkconnector.h
+        ../lib/networkconnector.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -43,7 +45,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(Client PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(Client PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Network)
 
 
 if(${QT_VERSION} VERSION_LESS 6.1.0)

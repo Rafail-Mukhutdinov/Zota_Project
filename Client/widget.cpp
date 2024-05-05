@@ -2,8 +2,8 @@
 #include "./ui_widget.h"
 
 Widget::Widget(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::Widget)
+    : QWidget(parent),
+    ui(new Ui::Widget)
 {
     ui->setupUi(this);
 }
@@ -92,9 +92,18 @@ void Widget::on_Button_0_clicked()
 
 
 void Widget::on_Button_equals_clicked()
-{    
-    lineEditText = strProces.removeLastOperator(ui->lineEdit_number->text());
-    ui->label_text_status->setText(lineEditText);
+{
+
+    if (net.socketState() == QAbstractSocket::ConnectedState)
+    {
+
+        lineEditText = strProces.removeLastOperator(ui->lineEdit_number->text());
+        net.sendMessage(lineEditText);
+        ui->label_text_status->setText("Message sent: " + lineEditText);
+    } else
+    {
+        ui->label_text_status->setText("No connection to server.");
+    }
 }
 
 
@@ -107,5 +116,20 @@ void Widget::on_Button_divide_clicked()
 void Widget::on_Button_reset_clicked()
 {
     ui->lineEdit_number->clear();
+}
+
+
+void Widget::on_Button_Connect_Server_clicked()
+{
+
+    if (net.socketState() == QAbstractSocket::UnconnectedState)
+    {
+        net.connectToServer(QHostAddress::LocalHost, 1234);
+        ui->Button_Connect_Server->setText("Disconnect from the Server");
+    } else if (net.socketState() == QAbstractSocket::ConnectedState)
+            {
+                net.disconnectFromServer();
+                ui->Button_Connect_Server->setText("Connect to the Server");
+            }
 }
 
