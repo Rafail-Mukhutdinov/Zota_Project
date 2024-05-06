@@ -56,6 +56,8 @@ private slots:
 
     void on_Button_Connect_Server_clicked();
 
+    void updateLineEdit(const QString &message);
+
 private:
     Ui::Widget *ui;
     QString lineEditText;

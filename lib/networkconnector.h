@@ -4,8 +4,8 @@
 #include <QObject>
 #include <QTcpServer>
 #include <QTcpSocket>
-#include <QCoreApplication>
 #include <QDebug>
+#include <QJSEngine>
 
 class NetworkConnector : public QObject
 {
@@ -18,9 +18,9 @@ public:
     void connectToServer(const QHostAddress &address, quint16 port);
     void startServer(const QHostAddress &address, quint16 port);
     void disconnectFromServer();
+    QTcpSocket* getSocket() const;
 
-private:
-    void onClientMessageReceived();
+private:    
     void sendResponseToClient(QTcpSocket* clientSocket, const QString &response);
     QString processMessage(const QString &message);
 
@@ -29,10 +29,15 @@ private slots:
     void onClientDisconnected();
     void onConnected();
     void onReadyRead();
+    void onClientMessageReceived();
+
+signals:
+    void messageReceived(const QString &message);
 
 private:
     QTcpSocket *m_socket;
     QTcpServer *m_server = nullptr;
+    QJSEngine engine;
 };
 
 #endif // NETWORKCONNECTOR_H
