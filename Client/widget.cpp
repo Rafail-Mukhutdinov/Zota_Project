@@ -6,6 +6,7 @@ Widget::Widget(QWidget *parent)
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
+    connect(&net, &NetworkConnector::messageReceived, this, &Widget::updateLineEdit);
 }
 
 Widget::~Widget()
@@ -15,101 +16,169 @@ Widget::~Widget()
 
 void Widget::on_Button_1_clicked()
 {
-    ui->lineEdit_number->setText(ui->lineEdit_number->text() + "1");
+    QString currentText = ui->lineEdit_number->text() + "1";
+    ui->lineEdit_number->setText(strProces.removeLeadingZeroAfterOperator(currentText));
 }
 
 
 void Widget::on_Button_7_clicked()
 {
-    ui->lineEdit_number->setText(ui->lineEdit_number->text() + "7");
+    QString currentText = ui->lineEdit_number->text() + "7";
+    ui->lineEdit_number->setText(strProces.removeLeadingZeroAfterOperator(currentText));
 }
 
 
 void Widget::on_Button_8_clicked()
 {
-  ui->lineEdit_number->setText(ui->lineEdit_number->text() + "8");
+    QString currentText = ui->lineEdit_number->text() + "8";
+    ui->lineEdit_number->setText(strProces.removeLeadingZeroAfterOperator(currentText));
 }
 
 
 void Widget::on_Button_9_clicked()
 {
-    ui->lineEdit_number->setText(ui->lineEdit_number->text() + "9");
+    QString currentText = ui->lineEdit_number->text() + "9";
+    ui->lineEdit_number->setText(strProces.removeLeadingZeroAfterOperator(currentText));
 }
 
 
 void Widget::on_Button_plus_clicked()
 {
-   ui->lineEdit_number->setText(ui->lineEdit_number->text() + "+");
+    QString currentText = ui->lineEdit_number->text();
+
+    if(currentText.isEmpty())
+    {
+        ui->label_text_status->setText("Incorrect expression");
+    }
+    else
+    {
+        QString newText = strProces.replaceLastOperator(currentText, '+');
+        ui->lineEdit_number->setText(newText);
+    }
 }
 
 
 void Widget::on_Button_4_clicked()
 {
-   ui->lineEdit_number->setText(ui->lineEdit_number->text() + "4");
+    QString currentText = ui->lineEdit_number->text() + "4";
+    ui->lineEdit_number->setText(strProces.removeLeadingZeroAfterOperator(currentText));
 }
 
 
 void Widget::on_Button_5_clicked()
 {
-   ui->lineEdit_number->setText(ui->lineEdit_number->text() + "5");
+    QString currentText = ui->lineEdit_number->text() + "5";
+    ui->lineEdit_number->setText(strProces.removeLeadingZeroAfterOperator(currentText));
 }
 
 
 void Widget::on_Button_6_clicked()
 {
-   ui->lineEdit_number->setText(ui->lineEdit_number->text() + "6");
+    QString currentText = ui->lineEdit_number->text() + "6";
+    ui->lineEdit_number->setText(strProces.removeLeadingZeroAfterOperator(currentText));
 }
 
 
 void Widget::on_pushButton_minus_clicked()
 {
-    ui->lineEdit_number->setText(ui->lineEdit_number->text() + "-");
+    QString currentText = ui->lineEdit_number->text();
+
+    if(currentText.isEmpty())
+    {
+        ui->label_text_status->setText("Incorrect expression");
+    }
+    else
+    {
+        QString newText = strProces.replaceLastOperator(currentText, '-');
+        ui->lineEdit_number->setText(newText);
+    }
 }
 
 
 void Widget::on_Button_2_clicked()
 {
-    ui->lineEdit_number->setText(ui->lineEdit_number->text() + "2");
+    QString currentText = ui->lineEdit_number->text() + "2";
+    ui->lineEdit_number->setText(strProces.removeLeadingZeroAfterOperator(currentText));
 }
 
 
 void Widget::on_Button_3_clicked()
 {
-    ui->lineEdit_number->setText(ui->lineEdit_number->text() + "3");
+    QString currentText = ui->lineEdit_number->text() + "3";
+    ui->lineEdit_number->setText(strProces.removeLeadingZeroAfterOperator(currentText));
 }
 
 
 void Widget::on_Button_multiply_clicked()
 {
-    ui->lineEdit_number->setText(ui->lineEdit_number->text() + "*");
+    QString currentText = ui->lineEdit_number->text();
+
+    if(currentText.isEmpty())
+    {
+        ui->label_text_status->setText("Incorrect expression");
+    }
+    else
+    {
+        QString newText = strProces.replaceLastOperator(currentText, '*');
+        ui->lineEdit_number->setText(newText);
+    }
+
 }
 
 
 void Widget::on_Button_0_clicked()
 {
-    ui->lineEdit_number->setText(ui->lineEdit_number->text() + "0");
+    QString currentText = ui->lineEdit_number->text();
+
+    if(currentText.isEmpty())
+    {
+        ui->label_text_status->setText("Incorrect expression");
+    }
+    else
+    {
+        QString currentText = ui->lineEdit_number->text() + "0";
+        ui->lineEdit_number->setText(strProces.removeLeadingZeroAfterOperator(currentText));
+    }
 }
+
 
 
 void Widget::on_Button_equals_clicked()
 {
+    QString currentText = ui->lineEdit_number->text();
 
-    if (net.socketState() == QAbstractSocket::ConnectedState)
+    if(currentText.isEmpty())
     {
+        ui->label_text_status->setText("Incorrect expression");
+    }else
+    {
+        if (net.socketState() == QAbstractSocket::ConnectedState)
+        {
 
-        lineEditText = strProces.removeLastOperator(ui->lineEdit_number->text());
-        net.sendMessage(lineEditText);
-        ui->label_text_status->setText("Message sent: " + lineEditText);
-    } else
-    {
-        ui->label_text_status->setText("No connection to server.");
+            lineEditText = strProces.removeLastOperator(ui->lineEdit_number->text());
+            net.sendMessage(lineEditText);
+            ui->label_text_status->setText("Message sent: " + lineEditText);
+        } else
+        {
+            ui->label_text_status->setText("No connection to server.");
+        }
     }
 }
 
 
 void Widget::on_Button_divide_clicked()
 {
-    ui->lineEdit_number->setText(ui->lineEdit_number->text() + "/");
+    QString currentText = ui->lineEdit_number->text();
+
+    if(currentText.isEmpty())
+    {
+        ui->label_text_status->setText("Incorrect expression");
+    }
+    else
+    {
+        QString newText = strProces.replaceLastOperator(currentText, '/');
+        ui->lineEdit_number->setText(newText);
+    }
 }
 
 
@@ -121,15 +190,28 @@ void Widget::on_Button_reset_clicked()
 
 void Widget::on_Button_Connect_Server_clicked()
 {
-
     if (net.socketState() == QAbstractSocket::UnconnectedState)
     {
         net.connectToServer(QHostAddress::LocalHost, 1234);
-        ui->Button_Connect_Server->setText("Disconnect from the Server");
-    } else if (net.socketState() == QAbstractSocket::ConnectedState)
-            {
-                net.disconnectFromServer();
-                ui->Button_Connect_Server->setText("Connect to the Server");
-            }
+
+        if (net.getSocket()->waitForConnected(5000))
+        {
+            ui->Button_Connect_Server->setText("Disconnect from the Server");
+        }
+        else
+        {
+            ui->label_text_status->setText("Server is not available");
+        }
+    }
+    else if (net.socketState() == QAbstractSocket::ConnectedState)
+    {
+        net.disconnectFromServer();
+        ui->Button_Connect_Server->setText("Connect to the Server");
+    }
+}
+
+void Widget::updateLineEdit(const QString &message)
+{
+    ui->lineEdit_number->setText(message); // Обновляем lineEdit полученным сообщением
 }
 

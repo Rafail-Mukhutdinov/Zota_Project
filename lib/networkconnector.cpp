@@ -31,7 +31,6 @@ void NetworkConnector::onNewConnection()
     QTcpSocket *clientSocket = m_server->nextPendingConnection();
     connect(clientSocket, &QTcpSocket::disconnected, this, &NetworkConnector::onClientDisconnected);
     connect(clientSocket, &QTcpSocket::readyRead, this, &NetworkConnector::onClientMessageReceived);
-    clientSocket->write("Welcome to the Server!\n");
     clientSocket->flush();
 
     qDebug() << "Client connected:" << clientSocket->peerAddress().toString() << "Port:" << clientSocket->peerPort();
@@ -51,12 +50,14 @@ void NetworkConnector::onClientDisconnected()
 void NetworkConnector::onConnected()
 {
     qDebug() << "Connected to server!";
-    m_socket->write("Hello, server!\n");
 }
 
+// Получаем сообщение от сервера
 void NetworkConnector::onReadyRead()
 {
-    qDebug() << "Message from server:" << m_socket->readAll();
+    QString message = m_socket->readAll();
+    qDebug() << "Message from server:" << message;
+    emit messageReceived(message);
 }
 
 void NetworkConnector::disconnectFromServer()
@@ -65,7 +66,6 @@ void NetworkConnector::disconnectFromServer()
     {
         m_socket->disconnectFromHost();
     }
-
 }
 
 QAbstractSocket::SocketState NetworkConnector::socketState() const
@@ -87,14 +87,17 @@ void NetworkConnector::onClientMessageReceived()
     QTcpSocket *clientSocket = qobject_cast<QTcpSocket*>(sender());
     if (clientSocket && clientSocket->bytesAvailable())
     {
-
         QString message = QString::fromUtf8(clientSocket->readAll());
-         qDebug() << "Message from client:" << message;
-        QString response = processMessage(message);
+        qDebug() << "Message from client:" << message;
+        // Выполняем расчет
+        QJSValue result = engine.evaluate(message);
+        qDebug() << "Результат выражения:" << result.toNumber();
+        QString response = processMessage(result.toString());
         sendResponseToClient(clientSocket, response);
     }
-
 }
+
+
 
 void NetworkConnector::sendResponseToClient(QTcpSocket* clientSocket, const QString &response)
 {
@@ -110,4 +113,9 @@ QString NetworkConnector::processMessage(const QString &message)
     // Здесь логика обработки сообщения
 
     return message;
+}
+
+QTcpSocket* NetworkConnector::getSocket() const
+{
+    return m_socket;
 }
