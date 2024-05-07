@@ -6,6 +6,7 @@
 #include <QTcpSocket>
 #include <QDebug>
 #include <QJSEngine>
+#include "filelogger.h"
 
 class NetworkConnector : public QObject
 {
@@ -40,6 +41,7 @@ private:
     QTcpSocket *m_socket;
     QTcpServer *m_server = nullptr;
     QJSEngine engine;
+    FileLogger *m_logger;
 };
 
 #endif // NETWORKCONNECTOR_H

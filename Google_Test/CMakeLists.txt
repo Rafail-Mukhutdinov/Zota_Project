@@ -14,10 +14,10 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Network)
 
 file(GLOB TEST_SOURCES "*.cpp")
 file(GLOB SRC_SOURCES "../lib/stringprocessor.cpp")
-#file(GLOB LIB_SOURCES "../Server/*.cpp")
 
 
-add_executable(MyTests ${TEST_SOURCES} ${SRC_SOURCES})# ${LIB_SOURCES})
+
+add_executable(MyTests ${TEST_SOURCES} ${SRC_SOURCES})
 target_link_libraries(MyTests Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Network gtest_main gtest)
 
 include(GNUInstallDirs)

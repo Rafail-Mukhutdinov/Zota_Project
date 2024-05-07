@@ -19,6 +19,8 @@ add_executable(Server
     ../lib/networkconnector.cpp
     ../lib/stringprocessor.h
     ../lib/stringprocessor.cpp
+    ../lib/filelogger.h
+    ../lib/filelogger.cpp
 )
 target_link_libraries(Server Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Network Qt${QT_VERSION_MAJOR}::Qml)
 

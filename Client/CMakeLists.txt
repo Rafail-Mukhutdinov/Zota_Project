@@ -17,12 +17,12 @@ set(PROJECT_SOURCES
         widget.cpp
         widget.h
         widget.ui
-        program.h 
-        program.cpp
         ../lib/stringprocessor.h
         ../lib/stringprocessor.cpp
         ../lib/networkconnector.h
         ../lib/networkconnector.cpp
+        ../lib/filelogger.h
+        ../lib/filelogger.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

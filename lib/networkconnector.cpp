@@ -5,6 +5,7 @@ NetworkConnector::NetworkConnector(QObject *parent) : QObject(parent),
 {
     connect(m_socket, &QTcpSocket::connected, this, &NetworkConnector::onConnected);
     connect(m_socket, &QTcpSocket::readyRead, this, &NetworkConnector::onReadyRead);
+    m_logger = new FileLogger(this);
 }
 
 NetworkConnector::~NetworkConnector()
@@ -102,29 +103,39 @@ void NetworkConnector::onClientMessageReceived()
     QTcpSocket *clientSocket = qobject_cast<QTcpSocket*>(sender());
     if (clientSocket && clientSocket->bytesAvailable())
     {
+        // Читаем сообщение от клиента
         QString message = QString::fromUtf8(clientSocket->readAll());
         qDebug() << "Message from client:" << message;
-        // Evaluate the expression
+
+        // Выполняем вычисление выражения
         QJSValue result = engine.evaluate(message);
 
-        // Check for errors
+        // Проверяем на наличие ошибок
+        QString resultString;
         if (result.isError()) {
             qDebug() << "Error evaluating expression:" << result.toString();
+            resultString = "ERROR";
             sendResponseToClient(clientSocket, "ERROR");
         } else {
-            // Check if the result is finite (not infinite)
+            // Проверяем, является ли результат конечным числом
             double numericResult = result.toNumber();
             if (std::isfinite(numericResult)) {
                 qDebug() << "Expression result:" << numericResult;
+                resultString = QString::number(numericResult);
                 QString response = processMessage(result.toString());
                 sendResponseToClient(clientSocket, response);
             } else {
                 qDebug() << "Expression result: inf";
+                resultString = "ERROR";
                 sendResponseToClient(clientSocket, "ERROR");
             }
         }
+
+        // Записываем данные в файл с помощью FileLogger
+        m_logger->logMessage(message, resultString);
     }
 }
+
 
 
 void NetworkConnector::sendResponseToClient(QTcpSocket* clientSocket, const QString &response)
