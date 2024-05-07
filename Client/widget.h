@@ -59,6 +59,10 @@ private slots:
     void updateLineEdit(const QString &message);
 
 private:
+
+    void clearIfErrorDisplayed();
+
+private:
     Ui::Widget *ui;
     QString lineEditText;
     StringProcessor strProces;

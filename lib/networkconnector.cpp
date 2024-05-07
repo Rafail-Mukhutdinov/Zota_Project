@@ -7,6 +7,21 @@ NetworkConnector::NetworkConnector(QObject *parent) : QObject(parent),
     connect(m_socket, &QTcpSocket::readyRead, this, &NetworkConnector::onReadyRead);
 }
 
+NetworkConnector::~NetworkConnector()
+{
+    if (m_socket)
+    {
+        m_socket->deleteLater();
+    }
+
+    if (m_server)
+    {
+        m_server->close();
+        m_server->deleteLater();
+    }
+}
+
+
 void NetworkConnector::startServer(const QHostAddress &address, quint16 port)
 {
     m_server = new QTcpServer(this);
@@ -89,14 +104,27 @@ void NetworkConnector::onClientMessageReceived()
     {
         QString message = QString::fromUtf8(clientSocket->readAll());
         qDebug() << "Message from client:" << message;
-        // Выполняем расчет
+        // Evaluate the expression
         QJSValue result = engine.evaluate(message);
-        qDebug() << "Результат выражения:" << result.toNumber();
-        QString response = processMessage(result.toString());
-        sendResponseToClient(clientSocket, response);
+
+        // Check for errors
+        if (result.isError()) {
+            qDebug() << "Error evaluating expression:" << result.toString();
+            sendResponseToClient(clientSocket, "ERROR");
+        } else {
+            // Check if the result is finite (not infinite)
+            double numericResult = result.toNumber();
+            if (std::isfinite(numericResult)) {
+                qDebug() << "Expression result:" << numericResult;
+                QString response = processMessage(result.toString());
+                sendResponseToClient(clientSocket, response);
+            } else {
+                qDebug() << "Expression result: inf";
+                sendResponseToClient(clientSocket, "ERROR");
+            }
+        }
     }
 }
-
 
 
 void NetworkConnector::sendResponseToClient(QTcpSocket* clientSocket, const QString &response)
