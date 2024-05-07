@@ -240,7 +240,7 @@ void Widget::on_Button_Connect_Server_clicked()
         if (net.getSocket()->waitForConnected(5000))
         {
             ui->Button_Connect_Server->setText("Disconnect from the Server");
-            ui->label_text_status->setText("Connect to the Server");
+            ui->label_text_status->setText("Connected to server");
         }
         else
         {
@@ -251,7 +251,7 @@ void Widget::on_Button_Connect_Server_clicked()
     {
         net.disconnectFromServer();
         ui->Button_Connect_Server->setText("Connect to the Server");
-        ui->label_text_status->setText("Disconnect from the Server");
+        ui->label_text_status->setText("Disconnected from server");
     }
 }
 
