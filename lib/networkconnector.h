@@ -13,6 +13,7 @@ class NetworkConnector : public QObject
 
 public:
     explicit NetworkConnector(QObject *parent = nullptr);
+    ~NetworkConnector();
     QAbstractSocket::SocketState socketState() const;
     void sendMessage(const QString &message);
     void connectToServer(const QHostAddress &address, quint16 port);
@@ -20,7 +21,8 @@ public:
     void disconnectFromServer();
     QTcpSocket* getSocket() const;
 
-private:    
+
+private:
     void sendResponseToClient(QTcpSocket* clientSocket, const QString &response);
     QString processMessage(const QString &message);
 
