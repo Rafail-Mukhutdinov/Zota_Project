@@ -73,7 +73,9 @@ void NetworkConnector::onReadyRead()
 {
     QString message = m_socket->readAll();
     qDebug() << "Message from server:" << message;
-    emit messageReceived(message);
+    QJsonObject jsonObj = QJsonDocument::fromJson(message.toUtf8()).object();
+    QString convertedFormula = matJson.jsonToFormula(jsonObj);
+    emit messageReceived(convertedFormula);
 }
 
 void NetworkConnector::disconnectFromServer()
@@ -105,34 +107,48 @@ void NetworkConnector::onClientMessageReceived()
     {
         // Читаем сообщение от клиента
         QString message = QString::fromUtf8(clientSocket->readAll());
-        qDebug() << "Message from client:" << message;
+
+        QJsonObject jsonObj = QJsonDocument::fromJson(message.toUtf8()).object();
+        QString convertedFormula = matJson.jsonToFormula(jsonObj);
+
+        qDebug() << "Message from client formula:" << convertedFormula;
+        qDebug() << "Message from client json :" << message;
 
         // Выполняем вычисление выражения
-        QJSValue result = engine.evaluate(message);
+        QJSValue result = engine.evaluate(convertedFormula);
 
         // Проверяем на наличие ошибок
         QString resultString;
-        if (result.isError()) {
+        if (result.isError())
+        {
             qDebug() << "Error evaluating expression:" << result.toString();
             resultString = "ERROR";
-            sendResponseToClient(clientSocket, "ERROR");
-        } else {
+
+        } else
+        {
             // Проверяем, является ли результат конечным числом
             double numericResult = result.toNumber();
-            if (std::isfinite(numericResult)) {
+            if (std::isfinite(numericResult))
+            {
                 qDebug() << "Expression result:" << numericResult;
                 resultString = QString::number(numericResult);
                 QString response = processMessage(result.toString());
-                sendResponseToClient(clientSocket, response);
-            } else {
+
+            } else
+            {
                 qDebug() << "Expression result: inf";
                 resultString = "ERROR";
-                sendResponseToClient(clientSocket, "ERROR");
+
             }
         }
 
+        QJsonObject json = matJson.formulaToJson(resultString);
+        QJsonDocument doc(json);
+        QString jsonString = doc.toJson();
+        sendResponseToClient(clientSocket, jsonString);
+
         // Записываем данные в файл с помощью FileLogger
-        m_logger->logMessage(message, resultString);
+        m_logger->logMessage(convertedFormula, resultString);
     }
 }
 

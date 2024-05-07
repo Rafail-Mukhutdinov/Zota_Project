@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QJSEngine>
 #include "filelogger.h"
+#include "mathformulajsonconverter.h"
 
 class NetworkConnector : public QObject
 {
@@ -42,6 +43,7 @@ private:
     QTcpServer *m_server = nullptr;
     QJSEngine engine;
     FileLogger *m_logger;
+    MathFormulaJsonConverter matJson;
 };
 
 #endif // NETWORKCONNECTOR_H

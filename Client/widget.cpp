@@ -192,8 +192,13 @@ void Widget::on_Button_equals_clicked()
         {
 
             lineEditText = strProces.removeLastOperator(ui->lineEdit_number->text());
-            net.sendMessage(lineEditText);
-            ui->label_text_status->setText("Message sent: " + lineEditText);
+
+            QJsonObject json = MathFormulaJsonConverter::formulaToJson(lineEditText);
+            QJsonDocument doc(json);
+            QString jsonString = doc.toJson();
+
+            net.sendMessage(jsonString);
+            ui->label_text_status->setText("Message sent: " + lineEditText );
         } else
         {
             ui->label_text_status->setText("No connection to server.");

@@ -23,6 +23,8 @@ set(PROJECT_SOURCES
         ../lib/networkconnector.cpp
         ../lib/filelogger.h
         ../lib/filelogger.cpp
+        ../lib/mathformulajsonconverter.h
+        ../lib/mathformulajsonconverter.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

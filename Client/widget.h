@@ -3,6 +3,8 @@
 
 #include "../lib/stringprocessor.h"
 #include "../lib/networkconnector.h"
+#include "../lib/mathformulajsonconverter.h"
+
 
 #include <QWidget>
 
@@ -67,6 +69,7 @@ private:
     QString lineEditText;
     StringProcessor strProces;
     NetworkConnector net;
+    MathFormulaJsonConverter matJson;
 
 };
 #endif // WIDGET_H

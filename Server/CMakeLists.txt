@@ -21,6 +21,8 @@ add_executable(Server
     ../lib/stringprocessor.cpp
     ../lib/filelogger.h
     ../lib/filelogger.cpp
+    ../lib/mathformulajsonconverter.h
+    ../lib/mathformulajsonconverter.cpp
 )
 target_link_libraries(Server Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Network Qt${QT_VERSION_MAJOR}::Qml)
 
