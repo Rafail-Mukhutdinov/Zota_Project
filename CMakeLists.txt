@@ -24,5 +24,6 @@ add_subdirectory(Server)
 add_subdirectory(Client)
 add_subdirectory(Google_Test)
 
+
 # Включите Google Test
 include(GoogleTest)
